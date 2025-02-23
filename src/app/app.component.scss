@@ -20,10 +20,35 @@ main{
 app-side-nav{
   position: absolute;
   left: 0rem;
-  width: 250px;
+  width: 80.5px;
   height: calc(100vh - 4rem);
   border: 2px;
   background: black;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.75);
   border-top: 1px solid white;
+  overflow-x: hidden;
+  white-space: nowrap;
+}
+
+.app-side-nav-open {
+  width: 250px;
+}
+
+
+.display-area{
+    left: calc(260px - 160px);
+    position: absolute;
+    padding: 1%;
+    font-family: poppins;
+    font-size: 25px;
+    // width: calc(100% - 60px);
+}
+
+.display-area-open{
+    left: 260px;
+    position: absolute;
+    padding: 1%;
+    font-family: poppins;
+    font-size: 25px;
+    // width: calc(100% - 260px);
 }
