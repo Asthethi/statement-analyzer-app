@@ -4,7 +4,17 @@
     <app-side-nav class="black-border" [sideNavStatus]="sideNavStatus" [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-side-nav>
 
     <div class="display-area" [ngClass]="{'display-area-open': sideNavStatus}">
-      <p>Main Display Area</p>
+      <hr>
+
+      <div class="transactions-header-container">
+        <p>Transactions</p>
+        <button class="uploadButton" type="submit" (click)="openDialog()">Upload Statement</button>
+      </div>
+
+      <hr>
+      <!-- Custom Dialog Component -->
+       <app-statement-upload-dialog [isOpen]="isDialogOpen" (close)="closeDialog()"></app-statement-upload-dialog>
+       <app-home></app-home>
     </div>
 
   </main>

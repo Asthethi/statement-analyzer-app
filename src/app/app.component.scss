@@ -28,6 +28,7 @@ app-side-nav{
   border-top: 1px solid white;
   overflow-x: hidden;
   white-space: nowrap;
+  transition: width 250ms linear;
 }
 
 .app-side-nav-open {
@@ -37,18 +38,51 @@ app-side-nav{
 
 .display-area{
     left: calc(260px - 160px);
-    position: absolute;
+    position: relative;
     padding: 1%;
     font-family: poppins;
     font-size: 25px;
-    // width: calc(100% - 60px);
+    transition: left 250ms linear, width 250ms linear;
+    width: calc(100% - 120px);
 }
 
 .display-area-open{
     left: 260px;
-    position: absolute;
+    position: relative;
     padding: 1%;
     font-family: poppins;
     font-size: 25px;
-    // width: calc(100% - 260px);
+    width: calc(100% - 280px);
+}
+
+
+.uploadButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background: #030303; /* Blue color */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  //transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.uploadButton:hover {
+  background: #0056b3; /* Darker blue on hover */
+}
+
+.uploadButton:active {
+  transform: scale(0.95); /* Slight shrink on click */
+}
+
+.transactions-header-container {
+  display: flex;
+  align-items: center; /* Align text and button vertically */
+  gap: 10px; /* Add spacing between elements */
+  justify-content: space-between; 
+}
+
+.transactions-header-container p {
+  margin-top: 0.5rem;
 }
