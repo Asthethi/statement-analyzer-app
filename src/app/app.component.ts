@@ -23,6 +23,10 @@ export class AppComponent {
     this.isDialogOpen = false;
   }
 
+  handleFileUpload(event : File) {
+    console.log(event);
+  }
+
   sideNavStatus: boolean = false;
 
   title = 'statement-analyzer-app';

@@ -13,7 +13,8 @@
 
       <hr>
       <!-- Custom Dialog Component -->
-       <app-statement-upload-dialog [isOpen]="isDialogOpen" (close)="closeDialog()"></app-statement-upload-dialog>
+       <app-statement-upload-dialog [isOpen]="isDialogOpen" (close)="closeDialog()"
+       (statementFileUploadEvent)= "handleFileUpload($event)"></app-statement-upload-dialog>
        <app-home></app-home>
     </div>
 
