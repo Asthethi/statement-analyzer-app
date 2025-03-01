@@ -1,1 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+.table-div-container {
+    max-height: 400px; /* Set a fixed height for the scrollable area */
+    overflow-y: auto; /* Enables vertical scrolling */
+    overflow-x: auto; /* Enables horizontal scrolling (if needed) */
+    border: 1px solid #ddd; /* Optional: Adds a border around the scrollable area */
+  }

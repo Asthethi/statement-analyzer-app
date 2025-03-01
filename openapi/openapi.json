@@ -1,126 +1,40 @@
 {
-    "openapi": "3.0.1",
-    "servers": [
-      {
-        "url": "http://localhost:8088/",
-        "description": "Local Server"
-      }
-    ],
-    "paths": {
-      "/account/statement/transactions/category": {
-        "get": {
-          "tags": [
-            "bank-statement-pdf-controller"
-          ],
-          "operationId": "getSpecificCategoryTransactions",
-          "parameters": [
-            {
-              "name": "transactionCategoryRequest",
-              "in": "query",
-              "required": true,
-              "schema": {
-                "$ref": "#/components/schemas/TransactionCategoryRequest"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "OK",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Transaction"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/account/statement/transactions/category/totalexpense": {
-        "get": {
-          "tags": [
-            "bank-statement-pdf-controller"
-          ],
-          "operationId": "getCategoryWiseTotalExpense",
-          "parameters": [
-            {
-              "name": "document",
-              "in": "query",
-              "required": true,
-              "schema": {
-                "type": "string",
-                "format": "binary"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "OK",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "type": "object",
-                    "additionalProperties": {
-                      "type": "number",
-                      "format": "double"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/account/statement/transactions/all": {
-        "get": {
-          "tags": [
-            "bank-statement-pdf-controller"
-          ],
-          "operationId": "getAllPdfText",
-          "parameters": [
-            {
-              "name": "fileRequest",
-              "in": "query",
-              "required": true,
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Bank Statement Analyzer",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8088",
+      "description": "Local Server"
+    }
+  ],
+  "paths": {
+    "/account/statement/transactions/all": {
+      "post": {
+        "tags": [
+          "bank-statement-pdf-controller"
+        ],
+        "operationId": "getAllPdfText",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
               "schema": {
                 "$ref": "#/components/schemas/FileRequest"
               }
             }
-          ],
-          "responses": {
-            "200": {
-              "description": "OK",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Transaction"
-                    }
-                  }
-                }
-              }
-            }
           }
-        }
-      },
-      "/account/statement/test": {
-        "get": {
-          "tags": [
-            "bank-statement-pdf-controller"
-          ],
-          "operationId": "getCategoryWiseTotalExpense_1",
-          "responses": {
-            "200": {
-              "description": "OK",
-              "content": {
-                "*/*": {
-                  "schema": {
-                    "type": "string"
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TransactionResponse"
                   }
                 }
               }
@@ -129,72 +43,169 @@
         }
       }
     },
-    "components": {
-      "schemas": {
-        "TransactionCategoryRequest": {
-          "required": [
-            "category",
-            "document"
-          ],
-          "type": "object",
-          "properties": {
-            "category": {
-              "type": "string"
-            },
-            "document": {
+    "/account/statement/transactions/category": {
+      "get": {
+        "tags": [
+          "bank-statement-pdf-controller"
+        ],
+        "operationId": "getSpecificCategoryTransactions",
+        "parameters": [
+          {
+            "name": "transactionCategoryRequest",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/TransactionCategoryRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Transaction"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/statement/transactions/category/totalexpense": {
+      "get": {
+        "tags": [
+          "bank-statement-pdf-controller"
+        ],
+        "operationId": "getCategoryWiseTotalExpense",
+        "parameters": [
+          {
+            "name": "document",
+            "in": "query",
+            "required": true,
+            "schema": {
               "type": "string",
               "format": "binary"
             }
           }
-        },
-        "Transaction": {
-          "type": "object",
-          "properties": {
-            "transactionDate": {
-              "type": "string"
-            },
-            "narration": {
-              "type": "string"
-            },
-            "debitAmount": {
-              "type": "number",
-              "format": "double"
-            },
-            "creditAmount": {
-              "type": "number",
-              "format": "double"
-            },
-            "refNumber": {
-              "type": "string"
-            },
-            "closingBalance": {
-              "type": "string"
-            },
-            "transactionType": {
-              "type": "string"
-            }
-          }
-        },
-        "FileRequest": {
-          "required": [
-            "document",
-            "fileType"
-          ],
-          "type": "object",
-          "properties": {
-            "document": {
-              "type": "string",
-              "format": "binary"
-            },
-            "fileType": {
-              "type": "string",
-              "enum": [
-                "TEXT",
-                "PDF"
-              ]
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "number",
+                    "format": "double"
+                  }
+                }
+              }
             }
           }
         }
       }
     }
+  },
+  "components": {
+    "schemas": {
+      "FileRequest": {
+        "required": [
+          "document",
+          "fileType"
+        ],
+        "type": "object",
+        "properties": {
+          "document": {
+            "type": "string",
+            "format": "binary"
+          },
+          "fileType": {
+            "type": "string",
+            "enum": [
+              "TEXT",
+              "PDF"
+            ]
+          }
+        }
+      },
+      "TransactionResponse": {
+        "type": "object",
+        "properties": {
+          "transactionDate": {
+            "type": "string"
+          },
+          "narration": {
+            "type": "string"
+          },
+          "debitAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "creditAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "refNumber": {
+            "type": "string"
+          },
+          "closingBalance": {
+            "type": "string"
+          },
+          "transactionType": {
+            "type": "string"
+          }
+        }
+      },
+      "TransactionCategoryRequest": {
+        "required": [
+          "category",
+          "document"
+        ],
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string"
+          },
+          "document": {
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
+      "Transaction": {
+        "type": "object",
+        "properties": {
+          "transactionDate": {
+            "type": "string"
+          },
+          "narration": {
+            "type": "string"
+          },
+          "debitAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "creditAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "refNumber": {
+            "type": "string"
+          },
+          "closingBalance": {
+            "type": "string"
+          },
+          "transactionType": {
+            "type": "string"
+          }
+        }
+      }
+    }
   }
+}

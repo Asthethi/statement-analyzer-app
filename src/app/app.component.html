@@ -4,7 +4,7 @@
     <app-side-nav class="black-border" [sideNavStatus]="sideNavStatus" [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-side-nav>
 
     <div class="display-area" [ngClass]="{'display-area-open': sideNavStatus}">
-      <hr>
+      
 
       <div class="transactions-header-container">
         <p>Transactions</p>
@@ -16,6 +16,15 @@
        <app-statement-upload-dialog [isOpen]="isDialogOpen" (close)="closeDialog()"
        (statementFileUploadEvent)= "handleFileUpload($event)"></app-statement-upload-dialog>
        <app-home></app-home>
+
+       <!-- Table Container -->
+       <div class="table-div-container">
+
+        <app-table-view [tableData]="allTransactions"></app-table-view>
+
+       </div>
+       <!-- Table Container End -->
+
     </div>
 
   </main>

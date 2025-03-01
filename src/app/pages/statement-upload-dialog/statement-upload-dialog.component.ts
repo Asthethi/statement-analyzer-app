@@ -12,7 +12,7 @@ export class StatementUploadDialogComponent {
   @Output() close = new EventEmitter<void>(); // Emit event when closed
   @Output() statementFileUploadEvent = new EventEmitter<File>();
 
-  inputFile? : File = undefined;
+  inputFile? : File | any;
 
   closeDialog() {
     this.close.emit(); // Notify parent to close dialog
