@@ -110,6 +110,29 @@
           }
         }
       }
+    },
+    "/account/statement/expensecategories": {
+      "get": {
+        "tags": [
+          "bank-statement-pdf-controller"
+        ],
+        "operationId": "getAllExpenseCategories",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {

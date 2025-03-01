@@ -11,6 +11,8 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
+import { getAllExpenseCategories } from '../fn/bank-statement-pdf-controller/get-all-expense-categories';
+import { GetAllExpenseCategories$Params } from '../fn/bank-statement-pdf-controller/get-all-expense-categories';
 import { getAllPdfText } from '../fn/bank-statement-pdf-controller/get-all-pdf-text';
 import { GetAllPdfText$Params } from '../fn/bank-statement-pdf-controller/get-all-pdf-text';
 import { getCategoryWiseTotalExpense } from '../fn/bank-statement-pdf-controller/get-category-wise-total-expense';
@@ -106,6 +108,31 @@ export class BankStatementPdfControllerService extends BaseService {
 }>): {
 [key: string]: number;
 } => r.body)
+    );
+  }
+
+  /** Path part for operation `getAllExpenseCategories()` */
+  static readonly GetAllExpenseCategoriesPath = '/account/statement/expensecategories';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getAllExpenseCategories()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllExpenseCategories$Response(params?: GetAllExpenseCategories$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<string>>> {
+    return getAllExpenseCategories(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getAllExpenseCategories$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllExpenseCategories(params?: GetAllExpenseCategories$Params, context?: HttpContext): Observable<Array<string>> {
+    return this.getAllExpenseCategories$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<string>>): Array<string> => r.body)
     );
   }
 

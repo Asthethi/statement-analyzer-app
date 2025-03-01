@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import {HeaderComponent} from './header/header.component';
 import {SideNavComponent} from './side-nav/side-nav.component';
 import { CommonModule } from '@angular/common';
@@ -22,6 +22,29 @@ export class AppComponent {
   isDialogOpen : boolean = false;
 
   allTransactions : TransactionResponse[] = [];
+  
+  allExpenseCategories : string[] = [];
+
+  sideNavStatus: boolean = false;
+
+  isFilterModalVisible : boolean = false;
+
+  title = 'statement-analyzer-app';
+
+  ngOnInit(){
+    this.getAllExpenseCategories();
+  }
+
+  getAllExpenseCategories() {
+    this.bankService.getAllExpenseCategories().subscribe({
+      next : (value) => {
+        this.allExpenseCategories = value;
+      },
+      error : (err) => {
+        console.log(err);
+      }
+    });
+  }
 
   openDialog() {
     this.isDialogOpen = true;
@@ -33,7 +56,6 @@ export class AppComponent {
 
   handleFileUpload(file : any) {
 
-
     this.bankService.getAllPdfText({body:{document : file, fileType : 'TEXT'}})
     .subscribe({
       next : (value) => {
@@ -41,13 +63,23 @@ export class AppComponent {
       },
       error : (err) => {
         console.log(err)
+      },
+      complete :() => {
+        this.isDialogOpen = false;
       }
     })
 
-    //console.log(event);
   }
 
-  sideNavStatus: boolean = false;
+  @HostListener('document:click',['$event']) onDocumentClick(event: MouseEvent){
+    const targetElement = event.target as HTMLElement;
+    if(!targetElement.closest('.filter-panel')){
+      this.isFilterModalVisible = false;
+    }
+  }
 
-  title = 'statement-analyzer-app';
+  onFilteClick(event : Event){
+    event.stopPropagation(); // Prevent event from propagating to document click
+    this.isFilterModalVisible = !this.isFilterModalVisible;
+  }
 }
