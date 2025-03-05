@@ -1,0 +1,51 @@
+# Node modules (dependencies)
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Angular build artifacts
+dist/
+out-tsc/
+coverage/
+.tmp/
+
+# Environment files (do not commit API keys or secrets)
+src/environments/environment*.ts
+
+# Logs and debugging
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# IDE and editor files
+.idea/
+.vscode/
+*.sublime-workspace
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Angular cache
+.angular/
+
+# Cypress or Playwright testing output
+cypress/screenshots/
+cypress/videos/
+playwright-report/
+
+# Firebase and serverless-related files
+.firebase/
+functions/node_modules/
+functions/package-lock.json
+
+# Miscellaneous
+*.bak
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
