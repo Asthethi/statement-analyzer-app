@@ -1,62 +1,3 @@
-body {
-  font-family: 'Poppins', sans-serif
-}
-
-app-header{
-  position: fixed;
-  width: 100%;
-  top: 0px;
-  height: 4rem;
-  z-index: 2;
-}
-
-main{
-  position: absolute;
-  width: 100%;
-  top: 4rem;
-  z-index: 1;
-}
-
-app-side-nav{
-  position: absolute;
-  left: 0rem;
-  width: 80.5px;
-  //height: calc(100vh - 4rem);
-  height: 100vh;
-  border: 2px;
-  background: black;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.75);
-  border-top: 1px solid white;
-  overflow-x: hidden;
-  white-space: nowrap;
-  transition: width 250ms linear;
-}
-
-.app-side-nav-open {
-  width: 250px;
-}
-
-
-.display-area{
-    left: calc(260px - 160px);
-    position: relative;
-    padding: 1%;
-    font-family: poppins;
-    font-size: 25px;
-    transition: left 250ms linear, width 250ms linear;
-    width: calc(100% - 120px);
-}
-
-.display-area-open{
-    left: 260px;
-    position: relative;
-    padding: 1%;
-    font-family: poppins;
-    font-size: 25px;
-    width: calc(100% - 280px);
-}
-
-
 .uploadButton {
   padding: 10px 20px;
   font-size: 16px;
@@ -96,11 +37,10 @@ app-side-nav{
 }
 
 .table-div-container {
-  max-height: 50rem; /* Set a fixed height for the scrollable area */
+  max-height: 80vh; /* 50% of the screen height */
   overflow-y: auto; /* Enables vertical scrolling */
   overflow-x: auto; /* Enables horizontal scrolling (if needed) */
   // border: 1px solid #ddd; /* Optional: Adds a border around the scrollable area */
-  width: 50rem;
 }
 
 .filter-panel {

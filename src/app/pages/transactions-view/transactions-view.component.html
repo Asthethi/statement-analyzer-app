@@ -1,0 +1,46 @@
+<div class="transactions-header-container">
+    <p>Transactions</p>
+    
+    <div class="filter-upload-button-container">
+      <div (click)="onFilteClick($event)" style="cursor: pointer;">
+        <a style="text-decoration: underline;">Filter </a>
+        <i class="fa-solid fa-arrow-down"></i>
+      </div>
+
+                <!-- Filter Window -->
+                
+                <div *ngIf="isFilterModalVisible" class="filter-panel position-absolute bg-white border shadow rounded p-3">
+                  <label for="categoryFilterLabel" class="form-label">Category :</label>
+                  <select id="selectCategoryDropdown" class="form-select mb-2" [disabled]="allTransactions.length === 0">
+                    <option *ngFor="let expenseCategory of allExpenseCategories" [value]="expenseCategory">{{expenseCategory}}</option>
+                  </select>
+                
+                  <div class="d-flex justify-content-between" style="    margin-left: 5%; margin-right: 5%; margin-top: 5%;">
+                    <button class="btn btn-primary filter-action-button" [disabled]="allTransactions.length === 0">Apply</button>
+                    <button class="btn btn-secondary filter-action-button" [disabled]="allTransactions.length === 0">Clear</button>
+                  </div>
+                </div>
+                
+                <!-- Filter Window End -->
+
+      <button class="uploadButton" type="submit" (click)="openDialog()">Upload Statement</button>
+    </div>
+    
+
+  </div>
+
+  <hr>
+
+
+<!-- Custom Dialog Component -->
+<app-statement-upload-dialog [isOpen]="isDialogOpen" (close)="closeDialog()"
+    (statementFileUploadEvent)="handleFileUpload($event)"></app-statement-upload-dialog>
+<!-- Custom Dialog Component End -->
+
+<!-- Table Container -->
+<div class="table-div-container">
+
+    <app-table-view [tableData]="allTransactions"></app-table-view>
+
+</div>
+<!-- Table Container End -->
