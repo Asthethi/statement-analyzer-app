@@ -2,7 +2,7 @@ import { Component, HostListener } from '@angular/core';
 import { TransactionResponse } from '../../../services/models/transaction-response';
 import { TableViewComponent } from '../../table-view/table-view.component';
 import { StatementUploadDialogComponent } from '../statement-upload-dialog/statement-upload-dialog.component';
-import { BankStatementPdfControllerService } from '../../../services/services/bank-statement-pdf-controller.service';
+import { BankStatementControllerService } from '../../../services/services/bank-statement-controller.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
 })
 export class TransactionsViewComponent {
 
-    constructor(private bankService : BankStatementPdfControllerService){}
+    constructor(private bankService : BankStatementControllerService){}
 
     allTransactions : TransactionResponse[] = [];
     isDialogOpen : boolean = false;
@@ -45,7 +45,7 @@ export class TransactionsViewComponent {
 
     handleFileUpload(file : any) {
 
-      this.bankService.getAllPdfText({body:{document : file, fileType : 'TEXT'}})
+      this.bankService.getTransactions({body:{document : file, fileType : 'TEXT'}})
       .subscribe({
         next : (value) => {
           this.allTransactions = value;

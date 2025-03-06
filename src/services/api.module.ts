@@ -6,7 +6,7 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
-import { BankStatementPdfControllerService } from './services/bank-statement-pdf-controller.service';
+import { BankStatementControllerService } from './services/bank-statement-controller.service';
 
 /**
  * Module that provides all services and configuration.
@@ -16,7 +16,7 @@ import { BankStatementPdfControllerService } from './services/bank-statement-pdf
   exports: [],
   declarations: [],
   providers: [
-    BankStatementPdfControllerService,
+    BankStatementControllerService,
     ApiConfiguration
   ],
 })

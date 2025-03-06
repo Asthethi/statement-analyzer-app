@@ -11,12 +11,54 @@
     }
   ],
   "paths": {
+    "/account/statement/transactions/category/totalexpense": {
+      "post": {
+        "tags": [
+          "bank-statement-controller"
+        ],
+        "operationId": "getCategoryWiseTotalExpense",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "document"
+                ],
+                "type": "object",
+                "properties": {
+                  "document": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "number",
+                    "format": "double"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/account/statement/transactions/all": {
       "post": {
         "tags": [
-          "bank-statement-pdf-controller"
+          "bank-statement-controller"
         ],
-        "operationId": "getAllPdfText",
+        "operationId": "getTransactions",
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -46,7 +88,7 @@
     "/account/statement/transactions/category": {
       "get": {
         "tags": [
-          "bank-statement-pdf-controller"
+          "bank-statement-controller"
         ],
         "operationId": "getSpecificCategoryTransactions",
         "parameters": [
@@ -76,45 +118,10 @@
         }
       }
     },
-    "/account/statement/transactions/category/totalexpense": {
-      "get": {
-        "tags": [
-          "bank-statement-pdf-controller"
-        ],
-        "operationId": "getCategoryWiseTotalExpense",
-        "parameters": [
-          {
-            "name": "document",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "binary"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "number",
-                    "format": "double"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/account/statement/expensecategories": {
       "get": {
         "tags": [
-          "bank-statement-pdf-controller"
+          "bank-statement-controller"
         ],
         "operationId": "getAllExpenseCategories",
         "responses": {

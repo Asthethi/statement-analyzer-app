@@ -1,56 +1,6 @@
-.uploadButton {
-  padding: 10px 20px;
-  font-size: 16px;
-  font-weight: bold;
-  color: white;
-  background: #030303; /* Blue color */
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  //transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.uploadButton:hover {
-  background: #0056b3; /* Darker blue on hover */
-}
-
-.uploadButton:active {
-  transform: scale(0.95); /* Slight shrink on click */
-}
-
-.transactions-header-container {
-  display: flex;
-  align-items: center; /* Align text and button vertically */
-  gap: 10px; /* Add spacing between elements */
-  justify-content: space-between; 
-}
-
-.transactions-header-container p {
-  margin-top: 0.5rem;
-}
-
-
-.filter-upload-button-container {
-  display: flex;
-  gap: 50px;
-  position: relative;
-}
-
 .table-div-container {
   max-height: 80vh; /* 50% of the screen height */
   overflow-y: auto; /* Enables vertical scrolling */
   overflow-x: auto; /* Enables horizontal scrolling (if needed) */
   // border: 1px solid #ddd; /* Optional: Adds a border around the scrollable area */
-}
-
-.filter-panel {
-  z-index: 10000;
-  top: 120%;
-  position: absolute;
-  min-width: 250px;
-}
-
-.filter-action-button {
-  min-width: 10%;
-
 }
