@@ -23,6 +23,7 @@ export class HomeComponent {
   allTransactions: TransactionResponse[] = [];
   uploadedTransactionsFile : File | any;
   totalExpenseCategoryWise: { [key: string]: number } = {};
+  monthwiseExpenseReport: { [key: string]: number } = {};
   chartData : ChartData[] = [];
   chartConfig : ChartConfig = {title : '', data : this.chartData, type: ''};
 
@@ -31,6 +32,7 @@ export class HomeComponent {
 
   highcharts = Highcharts; 
   categoryWisePieChartOptions : Highcharts.Options = {};
+  monthWiseBarChartOptions : Highcharts.Options = {};
   
   ngOnInit(){
     
@@ -51,6 +53,7 @@ export class HomeComponent {
         next: (value) => {
           this.allTransactions = value;
           this.getCategoryWiseTotalExpense(); // Fetch all expenses category wise
+          this.getMonthWiseExpenseReport();
 
         },
         error: (err) => {
@@ -61,6 +64,27 @@ export class HomeComponent {
         }
       })
 
+  }
+
+  getMonthWiseExpenseReport() {
+    this.bankService.getMonthWiseExpenseReport({body : {document : this.uploadedTransactionsFile}}).subscribe({
+      next: (value) => {
+        this.monthwiseExpenseReport = value;
+      },
+      error: (err) => {
+        alert(err);
+      },
+      complete: () => {
+        // Set chartConfigData and drawPie chart
+        this.chartData = [];
+        this.chartData = Object.entries(this.monthwiseExpenseReport).map(([key, value]) => new ChartData(key, value));
+        this.chartConfig.data = this.chartData;
+          this.chartConfig.title = 'Month Wise Expense Report';
+          this.chartConfig.type = 'column';
+          this.drawBarChart(this.chartConfig);
+
+      }
+    })
   }
 
   onFilteClick(event: Event) {
@@ -86,10 +110,9 @@ export class HomeComponent {
           console.log(err)
         },
         complete : () => {
-          console.log('completed loading category wise total expense')
           // Set chartConfigData and drawPie chart
+          this.chartData = [];
           this.chartData = Object.entries(this.totalExpenseCategoryWise).map(([key, value]) => new ChartData(key, value));
-          console.log(this.chartData)
           this.chartConfig.data = this.chartData;
           this.chartConfig.title = 'Category Wise Expense';
           this.chartConfig.type = 'pie';
@@ -118,9 +141,37 @@ export class HomeComponent {
     
   }
 
+  drawBarChart(chartConfig: ChartConfig) {
+    this.monthWiseBarChartOptions = {
+      chart: { type: chartConfig.type }, // ✅ Pie chart
+    title: { text: chartConfig.title },
+    xAxis: { type: 'category' }, // ✅ Categories on X-axis
+    yAxis: { title: { text: 'Amount Spent in (₹)' } },
+    plotOptions: {
+      series: {
+        borderWidth: 0,
+        dataLabels: {
+          enabled: true,
+          format: '₹{point.y:.2f}'
+        }
+      }
+    },
+    series: [{
+      type: chartConfig.type, // ✅ Explicitly specify 'pie' as a valid type
+      name: 'Expenses',
+      data: chartConfig.data
+    }] as Highcharts.SeriesOptionsType[] // ✅ Ensure correct typing
+    }
+    
+  }
 
-  get isChartOptionsEmpty(): boolean {
+
+  get isPieChartOptionsEmpty(): boolean {
     return !(JSON.stringify(this.categoryWisePieChartOptions)==='{}');
+  }
+
+  get isBarOptionsEmpty(): boolean {
+    return !(JSON.stringify(this.monthwiseExpenseReport)==='{}');
   }
 
 }

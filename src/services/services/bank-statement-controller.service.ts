@@ -15,6 +15,8 @@ import { getAllExpenseCategories } from '../fn/bank-statement-controller/get-all
 import { GetAllExpenseCategories$Params } from '../fn/bank-statement-controller/get-all-expense-categories';
 import { getCategoryWiseTotalExpense } from '../fn/bank-statement-controller/get-category-wise-total-expense';
 import { GetCategoryWiseTotalExpense$Params } from '../fn/bank-statement-controller/get-category-wise-total-expense';
+import { getMonthWiseExpenseReport } from '../fn/bank-statement-controller/get-month-wise-expense-report';
+import { GetMonthWiseExpenseReport$Params } from '../fn/bank-statement-controller/get-month-wise-expense-report';
 import { getSpecificCategoryTransactions } from '../fn/bank-statement-controller/get-specific-category-transactions';
 import { GetSpecificCategoryTransactions$Params } from '../fn/bank-statement-controller/get-specific-category-transactions';
 import { getTransactions } from '../fn/bank-statement-controller/get-transactions';
@@ -26,6 +28,39 @@ import { TransactionResponse } from '../models/transaction-response';
 export class BankStatementControllerService extends BaseService {
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
+  }
+
+  /** Path part for operation `getMonthWiseExpenseReport()` */
+  static readonly GetMonthWiseExpenseReportPath = '/account/statement/transactions/monthwise/expense';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getMonthWiseExpenseReport()` instead.
+   *
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   */
+  getMonthWiseExpenseReport$Response(params?: GetMonthWiseExpenseReport$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+[key: string]: number;
+}>> {
+    return getMonthWiseExpenseReport(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getMonthWiseExpenseReport$Response()` instead.
+   *
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   */
+  getMonthWiseExpenseReport(params?: GetMonthWiseExpenseReport$Params, context?: HttpContext): Observable<{
+[key: string]: number;
+}> {
+    return this.getMonthWiseExpenseReport$Response(params, context).pipe(
+      map((r: StrictHttpResponse<{
+[key: string]: number;
+}>): {
+[key: string]: number;
+} => r.body)
+    );
   }
 
   /** Path part for operation `getCategoryWiseTotalExpense()` */

@@ -11,6 +11,48 @@
     }
   ],
   "paths": {
+    "/account/statement/transactions/monthwise/expense": {
+      "post": {
+        "tags": [
+          "bank-statement-controller"
+        ],
+        "operationId": "getMonthWiseExpenseReport",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "document"
+                ],
+                "type": "object",
+                "properties": {
+                  "document": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "number",
+                    "format": "double"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/account/statement/transactions/category/totalexpense": {
       "post": {
         "tags": [
