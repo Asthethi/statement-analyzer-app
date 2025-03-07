@@ -40,7 +40,10 @@ export class BankStatementControllerService extends BaseService {
    * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
   getMonthWiseExpenseReport$Response(params?: GetMonthWiseExpenseReport$Params, context?: HttpContext): Observable<StrictHttpResponse<{
-[key: string]: number;
+[key: string]: {
+[key: string]: {
+};
+};
 }>> {
     return getMonthWiseExpenseReport(this.http, this.rootUrl, params, context);
   }
@@ -52,13 +55,22 @@ export class BankStatementControllerService extends BaseService {
    * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
   getMonthWiseExpenseReport(params?: GetMonthWiseExpenseReport$Params, context?: HttpContext): Observable<{
-[key: string]: number;
+[key: string]: {
+[key: string]: {
+};
+};
 }> {
     return this.getMonthWiseExpenseReport$Response(params, context).pipe(
       map((r: StrictHttpResponse<{
-[key: string]: number;
+[key: string]: {
+[key: string]: {
+};
+};
 }>): {
-[key: string]: number;
+[key: string]: {
+[key: string]: {
+};
+};
 } => r.body)
     );
   }

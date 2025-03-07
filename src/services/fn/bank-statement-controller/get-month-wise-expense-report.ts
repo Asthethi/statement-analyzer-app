@@ -16,7 +16,10 @@ export interface GetMonthWiseExpenseReport$Params {
 }
 
 export function getMonthWiseExpenseReport(http: HttpClient, rootUrl: string, params?: GetMonthWiseExpenseReport$Params, context?: HttpContext): Observable<StrictHttpResponse<{
-[key: string]: number;
+[key: string]: {
+[key: string]: {
+};
+};
 }>> {
   const rb = new RequestBuilder(rootUrl, getMonthWiseExpenseReport.PATH, 'post');
   if (params) {
@@ -29,7 +32,10 @@ export function getMonthWiseExpenseReport(http: HttpClient, rootUrl: string, par
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<{
-      [key: string]: number;
+      [key: string]: {
+      [key: string]: {
+      };
+      };
       }>;
     })
   );

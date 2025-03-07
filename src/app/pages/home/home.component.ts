@@ -1,12 +1,17 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as Highcharts from 'highcharts';
+import DrilldownModule from 'highcharts/modules/drilldown';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { StatementUploadDialogComponent } from '../statement-upload-dialog/statement-upload-dialog.component';
 import { TransactionResponse } from '../../../services/models/transaction-response';
 import { BankStatementControllerService } from '../../../services/services/bank-statement-controller.service';
 import { ChartConfig, ChartData } from '../../modals/chart-data.model';
 
+// ✅ Ensure Drilldown module is loaded
+if (typeof DrilldownModule === 'function') {
+  DrilldownModule(Highcharts);
+}
 
 @Component({
   selector: 'app-home',
@@ -14,6 +19,7 @@ import { ChartConfig, ChartData } from '../../modals/chart-data.model';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
+
 export class HomeComponent {
 
   constructor(private bankService: BankStatementControllerService
@@ -21,21 +27,22 @@ export class HomeComponent {
 
 
   allTransactions: TransactionResponse[] = [];
-  uploadedTransactionsFile : File | any;
+  uploadedTransactionsFile: File | any;
   totalExpenseCategoryWise: { [key: string]: number } = {};
-  monthwiseExpenseReport: { [key: string]: number } = {};
-  chartData : ChartData[] = [];
-  chartConfig : ChartConfig = {title : '', data : this.chartData, type: ''};
+  monthwiseExpenseReport = {};
+
+  chartData: ChartData[] = [];
+  chartConfig: ChartConfig = { title: '', data: this.chartData, type: '' };
 
   isDialogOpen: boolean = false;
   isFilterModalVisible: boolean = false;
 
-  highcharts = Highcharts; 
-  categoryWisePieChartOptions : Highcharts.Options = {};
-  monthWiseBarChartOptions : Highcharts.Options = {};
-  
-  ngOnInit(){
-    
+  highcharts = Highcharts;
+  categoryWisePieChartOptions: Highcharts.Options = {};
+  monthWiseBarChartOptions: Highcharts.Options = {};
+
+  ngOnInit() {
+
   }
 
   openDialog() {
@@ -67,7 +74,7 @@ export class HomeComponent {
   }
 
   getMonthWiseExpenseReport() {
-    this.bankService.getMonthWiseExpenseReport({body : {document : this.uploadedTransactionsFile}}).subscribe({
+    this.bankService.getMonthWiseExpenseReport({ body: { document: this.uploadedTransactionsFile } }).subscribe({
       next: (value) => {
         this.monthwiseExpenseReport = value;
       },
@@ -77,11 +84,39 @@ export class HomeComponent {
       complete: () => {
         // Set chartConfigData and drawPie chart
         this.chartData = [];
-        this.chartData = Object.entries(this.monthwiseExpenseReport).map(([key, value]) => new ChartData(key, value));
+
+        Object.entries(this.monthwiseExpenseReport).forEach(([month, data]) => {
+          const monthData = data as { expense: number; details: { name: string; y: number }[] };
+
+          // 🔹 Add main category data with drilldown ID
+          this.chartData.push(new ChartData(month, monthData.expense, month));
+
+        });
+
+        const drilldownData: { id: string; data: [string, number][] }[] = [];
+
+        Object.entries(this.monthwiseExpenseReport).forEach(([month, data]) => {
+          const monthData = data as {
+            expense: number;
+            details: Record<string, number>; // ✅ More readable type
+          };
+
+          drilldownData.push({
+            id: month,
+            data: Object.entries(monthData.details) as [string, number][]
+          });
+        });
+
+        // ✅ Correctly map drilldownData to Highcharts.SeriesOptionsType
+        const highchartsDrilldownSeries: Highcharts.SeriesOptionsType[] = drilldownData.map(item => ({
+          id: item.id, // ✅ Matches drilldown ID in main series
+          data: item.data
+        }) as Highcharts.SeriesOptionsType);
+
         this.chartConfig.data = this.chartData;
-          this.chartConfig.title = 'Month Wise Expense Report';
-          this.chartConfig.type = 'column';
-          this.drawBarChart(this.chartConfig);
+        this.chartConfig.title = 'Month Wise Expense Report';
+        this.chartConfig.type = 'column';
+        this.drawBarChart(this.chartConfig, highchartsDrilldownSeries);
 
       }
     })
@@ -102,14 +137,14 @@ export class HomeComponent {
   /*Below Api fetchces all the expenses categories wise*/
   private getCategoryWiseTotalExpense() {
     if (this.uploadedTransactionsFile) {
-      this.bankService.getCategoryWiseTotalExpense({body: {document : this.uploadedTransactionsFile}}).subscribe({
+      this.bankService.getCategoryWiseTotalExpense({ body: { document: this.uploadedTransactionsFile } }).subscribe({
         next: (value) => {
           this.totalExpenseCategoryWise = value;
         },
         error: (err) => {
           console.log(err)
         },
-        complete : () => {
+        complete: () => {
           // Set chartConfigData and drawPie chart
           this.chartData = [];
           this.chartData = Object.entries(this.totalExpenseCategoryWise).map(([key, value]) => new ChartData(key, value));
@@ -117,7 +152,7 @@ export class HomeComponent {
           this.chartConfig.title = 'Category Wise Expense';
           this.chartConfig.type = 'pie';
           this.drawPiChart(this.chartConfig);
-        
+
 
         }
       })
@@ -131,47 +166,56 @@ export class HomeComponent {
   drawPiChart(chartConfig: ChartConfig) {
     this.categoryWisePieChartOptions = {
       chart: { type: chartConfig.type }, // ✅ Pie chart
-    title: { text: chartConfig.title },
-    series: [{
-      type: chartConfig.type, // ✅ Explicitly specify 'pie' as a valid type
-      name: 'Values',
-      data: chartConfig.data
-    }] as Highcharts.SeriesOptionsType[] // ✅ Ensure correct typing
+      title: { text: chartConfig.title },
+      series: [{
+        type: chartConfig.type, // ✅ Explicitly specify 'pie' as a valid type
+        name: 'Values',
+        data: chartConfig.data
+      }] as Highcharts.SeriesOptionsType[] // ✅ Ensure correct typing
     }
-    
+
   }
 
-  drawBarChart(chartConfig: ChartConfig) {
+  drawBarChart(chartConfig: ChartConfig, drilldownData: Highcharts.SeriesOptionsType[]) {
+    console.log(chartConfig.data)
     this.monthWiseBarChartOptions = {
       chart: { type: chartConfig.type }, // ✅ Pie chart
-    title: { text: chartConfig.title },
-    xAxis: { type: 'category' }, // ✅ Categories on X-axis
-    yAxis: { title: { text: 'Amount Spent in (₹)' } },
-    plotOptions: {
-      series: {
-        borderWidth: 0,
-        dataLabels: {
-          enabled: true,
-          format: '₹{point.y:.2f}'
+      title: { text: chartConfig.title },
+      xAxis: { type: 'category' }, // ✅ Categories on X-axis
+      yAxis: { title: { text: 'Amount Spent in (₹)' } },
+      plotOptions: {
+        series: {
+          borderWidth: 0,
+          dataLabels: {
+            enabled: true,
+            format: '₹{point.y:.2f}'
+          }
         }
+      },
+      series: [{
+        type: chartConfig.type, // ✅ Explicitly specify 'pie' as a valid type
+        name: 'Expenses',
+        data: chartConfig.data.map((item: any) => ({
+          name: item.name, // ✅ Adjust this based on actual structure
+          y: item.y,      // ✅ Ensure this matches the field name for value
+          drilldown: item.drilldown // ✅ Must match drilldown series ID
+        }))
+
+      }] as Highcharts.SeriesOptionsType[], // ✅ Ensure correct typing
+      drilldown: {
+        series: drilldownData
       }
-    },
-    series: [{
-      type: chartConfig.type, // ✅ Explicitly specify 'pie' as a valid type
-      name: 'Expenses',
-      data: chartConfig.data
-    }] as Highcharts.SeriesOptionsType[] // ✅ Ensure correct typing
     }
-    
+
   }
 
 
   get isPieChartOptionsEmpty(): boolean {
-    return !(JSON.stringify(this.categoryWisePieChartOptions)==='{}');
+    return !(JSON.stringify(this.categoryWisePieChartOptions) === '{}');
   }
 
   get isBarOptionsEmpty(): boolean {
-    return !(JSON.stringify(this.monthwiseExpenseReport)==='{}');
+    return !(JSON.stringify(this.monthwiseExpenseReport) === '{}');
   }
 
 }

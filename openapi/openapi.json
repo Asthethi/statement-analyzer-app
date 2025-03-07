@@ -43,8 +43,10 @@
                 "schema": {
                   "type": "object",
                   "additionalProperties": {
-                    "type": "number",
-                    "format": "double"
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "object"
+                    }
                   }
                 }
               }
@@ -274,6 +276,9 @@
             "type": "string"
           },
           "transactionType": {
+            "type": "string"
+          },
+          "transactionCategory": {
             "type": "string"
           }
         }
