@@ -9,16 +9,16 @@ import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
 
-export interface GetCategoryWiseTotalExpense$Params {
+export interface GetCategoryWiseTotalExpense1$Params {
       body?: {
 'document': Blob;
 }
 }
 
-export function getCategoryWiseTotalExpense(http: HttpClient, rootUrl: string, params?: GetCategoryWiseTotalExpense$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+export function getCategoryWiseTotalExpense1(http: HttpClient, rootUrl: string, params?: GetCategoryWiseTotalExpense1$Params, context?: HttpContext): Observable<StrictHttpResponse<{
 [key: string]: number;
 }>> {
-  const rb = new RequestBuilder(rootUrl, getCategoryWiseTotalExpense.PATH, 'post');
+  const rb = new RequestBuilder(rootUrl, getCategoryWiseTotalExpense1.PATH, 'post');
   if (params) {
     rb.body(params.body, 'multipart/form-data');
   }
@@ -35,4 +35,4 @@ export function getCategoryWiseTotalExpense(http: HttpClient, rootUrl: string, p
   );
 }
 
-getCategoryWiseTotalExpense.PATH = '/account/statement/transactions/category/totalexpense';
+getCategoryWiseTotalExpense1.PATH = '/account/statement/transactions/category/totalexpense';

@@ -4,6 +4,7 @@ import { TableViewComponent } from '../../table-view/table-view.component';
 import { StatementUploadDialogComponent } from '../statement-upload-dialog/statement-upload-dialog.component';
 import { BankStatementControllerService } from '../../../services/services/bank-statement-controller.service';
 import { CommonModule } from '@angular/common';
+import { StatementControllerService } from '../../../services/services';
 
 @Component({
   selector: 'app-transactions-view',
@@ -13,7 +14,7 @@ import { CommonModule } from '@angular/common';
 })
 export class TransactionsViewComponent {
 
-    constructor(private bankService : BankStatementControllerService){}
+    constructor(private bankService : StatementControllerService){}
 
     allTransactions : TransactionResponse[] = [];
     isDialogOpen : boolean = false;
@@ -25,7 +26,7 @@ export class TransactionsViewComponent {
     }
 
     getAllExpenseCategories() {
-      this.bankService.getAllExpenseCategories().subscribe({
+      this.bankService.getAllExpenseCategories({bankName : 'HDFC'}).subscribe({
         next : (value) => {
           this.allExpenseCategories = value;
         },
@@ -45,7 +46,7 @@ export class TransactionsViewComponent {
 
     handleFileUpload(file : any) {
 
-      this.bankService.getTransactions({body:{document : file, fileType : 'TEXT'}})
+      this.bankService.getTransactions({bankName : 'HDFC',body:{document : file, fileType : 'TEXT'}})
       .subscribe({
         next : (value) => {
           this.allTransactions = value;

@@ -9,22 +9,22 @@ import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
 
-export interface GetAllExpenseCategories$Params {
+export interface SaveTransactions$Params {
 }
 
-export function getAllExpenseCategories(http: HttpClient, rootUrl: string, params?: GetAllExpenseCategories$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<string>>> {
-  const rb = new RequestBuilder(rootUrl, getAllExpenseCategories.PATH, 'get');
+export function saveTransactions(http: HttpClient, rootUrl: string, params?: SaveTransactions$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+  const rb = new RequestBuilder(rootUrl, saveTransactions.PATH, 'post');
   if (params) {
   }
 
   return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
+    rb.build({ responseType: 'text', accept: '*/*', context })
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<Array<string>>;
+      return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
     })
   );
 }
 
-getAllExpenseCategories.PATH = '/account/statement/expensecategories';
+saveTransactions.PATH = '/bank/account/statement/transactions/save';

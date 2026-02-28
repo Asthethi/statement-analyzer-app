@@ -11,12 +11,284 @@
     }
   ],
   "paths": {
+    "/bank/account/statement/transactions/save": {
+      "post": {
+        "tags": [
+          "statement-controller"
+        ],
+        "operationId": "saveTransactions",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/bank/account/statement/transactions/save/{bankName}/{month}": {
+      "post": {
+        "tags": [
+          "statement-controller"
+        ],
+        "operationId": "getSpecificMonthTransactions",
+        "parameters": [
+          {
+            "name": "bankName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "document"
+                ],
+                "type": "object",
+                "properties": {
+                  "document": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "month": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TransactionResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bank/account/statement/transactions/monthwise/expense/{bankName}": {
+      "post": {
+        "tags": [
+          "statement-controller"
+        ],
+        "operationId": "getMonthWiseExpenseReport",
+        "parameters": [
+          {
+            "name": "bankName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "document"
+                ],
+                "type": "object",
+                "properties": {
+                  "document": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bank/account/statement/transactions/category/totalexpense/{bankName}": {
+      "post": {
+        "tags": [
+          "statement-controller"
+        ],
+        "operationId": "getCategoryWiseTotalExpense",
+        "parameters": [
+          {
+            "name": "bankName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "document"
+                ],
+                "type": "object",
+                "properties": {
+                  "document": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "number",
+                    "format": "double"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bank/account/statement/all/transactions/{bankName}": {
+      "post": {
+        "tags": [
+          "statement-controller"
+        ],
+        "operationId": "getTransactions",
+        "parameters": [
+          {
+            "name": "bankName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/FileRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TransactionResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/statement/transactions/save": {
+      "post": {
+        "tags": [
+          "bank-statement-controller"
+        ],
+        "operationId": "saveTransactions_1",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/account/statement/transactions/save/{month}": {
+      "post": {
+        "tags": [
+          "bank-statement-controller"
+        ],
+        "operationId": "getSpecificMonthTransactions_1",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "document"
+                ],
+                "type": "object",
+                "properties": {
+                  "document": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "month": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TransactionResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/account/statement/transactions/monthwise/expense": {
       "post": {
         "tags": [
           "bank-statement-controller"
         ],
-        "operationId": "getMonthWiseExpenseReport",
+        "operationId": "getMonthWiseExpenseReport_1",
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -60,7 +332,7 @@
         "tags": [
           "bank-statement-controller"
         ],
-        "operationId": "getCategoryWiseTotalExpense",
+        "operationId": "getCategoryWiseTotalExpense_1",
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -102,7 +374,7 @@
         "tags": [
           "bank-statement-controller"
         ],
-        "operationId": "getTransactions",
+        "operationId": "getTransactions_1",
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -129,12 +401,86 @@
         }
       }
     },
+    "/bank/account/statement/transactions/category{bankName}": {
+      "get": {
+        "tags": [
+          "statement-controller"
+        ],
+        "operationId": "getSpecificCategoryTransactions",
+        "parameters": [
+          {
+            "name": "transactionCategoryRequest",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/TransactionCategoryRequest"
+            }
+          },
+          {
+            "name": "bankName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Transaction"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bank/account/statement/expensecategories/{bankName}": {
+      "get": {
+        "tags": [
+          "statement-controller"
+        ],
+        "operationId": "getAllExpenseCategories",
+        "parameters": [
+          {
+            "name": "bankName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/account/statement/transactions/category": {
       "get": {
         "tags": [
           "bank-statement-controller"
         ],
-        "operationId": "getSpecificCategoryTransactions",
+        "operationId": "getSpecificCategoryTransactions_1",
         "parameters": [
           {
             "name": "transactionCategoryRequest",
@@ -167,7 +513,7 @@
         "tags": [
           "bank-statement-controller"
         ],
-        "operationId": "getAllExpenseCategories",
+        "operationId": "getAllExpenseCategories_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -188,26 +534,6 @@
   },
   "components": {
     "schemas": {
-      "FileRequest": {
-        "required": [
-          "document",
-          "fileType"
-        ],
-        "type": "object",
-        "properties": {
-          "document": {
-            "type": "string",
-            "format": "binary"
-          },
-          "fileType": {
-            "type": "string",
-            "enum": [
-              "TEXT",
-              "PDF"
-            ]
-          }
-        }
-      },
       "TransactionResponse": {
         "type": "object",
         "properties": {
@@ -233,6 +559,26 @@
           },
           "transactionType": {
             "type": "string"
+          }
+        }
+      },
+      "FileRequest": {
+        "required": [
+          "document",
+          "fileType"
+        ],
+        "type": "object",
+        "properties": {
+          "document": {
+            "type": "string",
+            "format": "binary"
+          },
+          "fileType": {
+            "type": "string",
+            "enum": [
+              "TEXT",
+              "PDF"
+            ]
           }
         }
       },

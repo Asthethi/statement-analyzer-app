@@ -7,6 +7,7 @@ import { StatementUploadDialogComponent } from '../statement-upload-dialog/state
 import { TransactionResponse } from '../../../services/models/transaction-response';
 import { BankStatementControllerService } from '../../../services/services/bank-statement-controller.service';
 import { ChartConfig, ChartData } from '../../modals/chart-data.model';
+import { StatementControllerService } from '../../../services/services';
 
 // ✅ Ensure Drilldown module is loaded
 if (typeof DrilldownModule === 'function') {
@@ -22,7 +23,7 @@ if (typeof DrilldownModule === 'function') {
 
 export class HomeComponent {
 
-  constructor(private bankService: BankStatementControllerService
+  constructor(private bankService: StatementControllerService
   ) { }
 
 
@@ -55,7 +56,9 @@ export class HomeComponent {
 
   handleFileUpload(file: any) {
     this.uploadedTransactionsFile = file;
-    this.bankService.getTransactions({ body: { document: file, fileType: 'TEXT' } })
+    const fileType = this.getFileType(this.uploadedTransactionsFile.type);
+    console.log(fileType);
+    this.bankService.getTransactions({bankName : 'HDFC', body: { document: file, fileType:  fileType} })
       .subscribe({
         next: (value) => {
           this.allTransactions = value;
@@ -72,9 +75,16 @@ export class HomeComponent {
       })
 
   }
+  getFileType(type: any) {
+    if(type === "text/plain") {
+      return 'TEXT';
+    } else {
+      return 'PDF';
+    }
+  }
 
   getMonthWiseExpenseReport() {
-    this.bankService.getMonthWiseExpenseReport({ body: { document: this.uploadedTransactionsFile } }).subscribe({
+    this.bankService.getMonthWiseExpenseReport({bankName : 'HDFC', body: { document: this.uploadedTransactionsFile } }).subscribe({
       next: (value) => {
         this.monthwiseExpenseReport = value;
       },
@@ -137,7 +147,7 @@ export class HomeComponent {
   /*Below Api fetchces all the expenses categories wise*/
   private getCategoryWiseTotalExpense() {
     if (this.uploadedTransactionsFile) {
-      this.bankService.getCategoryWiseTotalExpense({ body: { document: this.uploadedTransactionsFile } }).subscribe({
+      this.bankService.getCategoryWiseTotalExpense({bankName : 'HDFC', body: { document: this.uploadedTransactionsFile } }).subscribe({
         next: (value) => {
           this.totalExpenseCategoryWise = value;
         },

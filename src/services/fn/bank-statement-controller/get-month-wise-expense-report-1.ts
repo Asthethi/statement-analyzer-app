@@ -9,19 +9,19 @@ import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
 
-export interface GetMonthWiseExpenseReport$Params {
+export interface GetMonthWiseExpenseReport1$Params {
       body?: {
 'document': Blob;
 }
 }
 
-export function getMonthWiseExpenseReport(http: HttpClient, rootUrl: string, params?: GetMonthWiseExpenseReport$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+export function getMonthWiseExpenseReport1(http: HttpClient, rootUrl: string, params?: GetMonthWiseExpenseReport1$Params, context?: HttpContext): Observable<StrictHttpResponse<{
 [key: string]: {
 [key: string]: {
 };
 };
 }>> {
-  const rb = new RequestBuilder(rootUrl, getMonthWiseExpenseReport.PATH, 'post');
+  const rb = new RequestBuilder(rootUrl, getMonthWiseExpenseReport1.PATH, 'post');
   if (params) {
     rb.body(params.body, 'multipart/form-data');
   }
@@ -41,4 +41,4 @@ export function getMonthWiseExpenseReport(http: HttpClient, rootUrl: string, par
   );
 }
 
-getMonthWiseExpenseReport.PATH = '/account/statement/transactions/monthwise/expense';
+getMonthWiseExpenseReport1.PATH = '/account/statement/transactions/monthwise/expense';

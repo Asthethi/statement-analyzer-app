@@ -13,12 +13,14 @@ import { TransactionCategoryRequest } from '../../models/transaction-category-re
 
 export interface GetSpecificCategoryTransactions$Params {
   transactionCategoryRequest: TransactionCategoryRequest;
+  bankName: string;
 }
 
 export function getSpecificCategoryTransactions(http: HttpClient, rootUrl: string, params: GetSpecificCategoryTransactions$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Transaction>>> {
   const rb = new RequestBuilder(rootUrl, getSpecificCategoryTransactions.PATH, 'get');
   if (params) {
     rb.query('transactionCategoryRequest', params.transactionCategoryRequest, {});
+    rb.path('bankName', params.bankName, {});
   }
 
   return http.request(
@@ -31,4 +33,4 @@ export function getSpecificCategoryTransactions(http: HttpClient, rootUrl: strin
   );
 }
 
-getSpecificCategoryTransactions.PATH = '/account/statement/transactions/category';
+getSpecificCategoryTransactions.PATH = '/bank/account/statement/transactions/category{bankName}';

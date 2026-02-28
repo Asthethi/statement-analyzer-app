@@ -6,6 +6,7 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
+import { StatementControllerService } from './services/statement-controller.service';
 import { BankStatementControllerService } from './services/bank-statement-controller.service';
 
 /**
@@ -16,6 +17,7 @@ import { BankStatementControllerService } from './services/bank-statement-contro
   exports: [],
   declarations: [],
   providers: [
+    StatementControllerService,
     BankStatementControllerService,
     ApiConfiguration
   ],
