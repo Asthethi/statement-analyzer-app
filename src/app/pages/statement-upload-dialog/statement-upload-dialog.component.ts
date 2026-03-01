@@ -12,7 +12,7 @@ export class StatementUploadDialogComponent {
   @Output() close = new EventEmitter<void>(); // Emit event when closed
   @Output() statementFileUploadEvent = new EventEmitter<File>();
 
-  inputFile? : File = undefined;
+  inputFile? : File | any;
 
   closeDialog() {
     this.close.emit(); // Notify parent to close dialog
@@ -27,13 +27,14 @@ export class StatementUploadDialogComponent {
     if (input && input.files && input.files.length > 0) {
       const file: File = input.files[0];
 
-      if (file.type !== 'text/plain' && !file.name.endsWith('.txt')) {
-        alert('Only .txt files are allowed!');
-        input.value = ''; // Clear the input
-        return;
-      }else{
-        this.inputFile = file;
-      }
+      // if (file.type !== 'text/plain' && !file.name.endsWith('.txt')) {
+      //   alert('Only .txt files are allowed!');
+      //   input.value = ''; // Clear the input
+      //   return;
+      // }else{
+      //   this.inputFile = file;
+      // }
+      this.inputFile = file;
     }
   }
 

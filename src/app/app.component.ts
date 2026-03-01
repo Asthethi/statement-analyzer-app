@@ -1,55 +1,24 @@
 import { Component } from '@angular/core';
-import {HeaderComponent} from './header/header.component';
-import {SideNavComponent} from './side-nav/side-nav.component';
+import { HeaderComponent } from './header/header.component';
+import { SideNavComponent } from './side-nav/side-nav.component';
 import { CommonModule } from '@angular/common';
-import { HomeComponent } from "./pages/home/home.component";
-import { StatementUploadDialogComponent } from "./pages/statement-upload-dialog/statement-upload-dialog.component";
-import { BankStatementPdfControllerService } from './services/services';
-import { FileRequest } from './services/models';
-import { Transaction } from './services/models/transaction'
+import { RouterOutlet } from '@angular/router'; 
 
 
 @Component({
   selector: 'app-root',
-  imports: [HeaderComponent, SideNavComponent, CommonModule, HomeComponent, StatementUploadDialogComponent],
+  imports: [HeaderComponent, SideNavComponent, CommonModule, RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
 
-  public constructor(private bankStatementService:  BankStatementPdfControllerService){}
-
-  isDialogOpen : boolean = false;
-  allTransactionsResponse : Transaction[] = []
- 
-
-  openDialog() {
-    this.isDialogOpen = true;
-  }
-
-  closeDialog() {
-    this.isDialogOpen = false;
-  }
-
-  handleFileUpload(event : File) {
-   
-    this.bankStatementService.getAllPdfText({fileRequest:{document: event, fileType: 'TEXT'}})
-    .subscribe({
-      next: value => {
-        this.allTransactionsResponse = value;
-        console.log(this.allTransactionsResponse)
-        //this.allTransactionsResponse = value;
-      },
-      error : err =>{
-        
-      },
-      complete() {
-        
-      },
-    })
-  }
-
   sideNavStatus: boolean = false;
 
   title = 'statement-analyzer-app';
+
+  ngOnInit() {
+  }
+
+
 }

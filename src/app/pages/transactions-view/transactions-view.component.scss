@@ -1,0 +1,6 @@
+.table-div-container {
+  max-height: 80vh; /* 50% of the screen height */
+  overflow-y: auto; /* Enables vertical scrolling */
+  overflow-x: auto; /* Enables horizontal scrolling (if needed) */
+  // border: 1px solid #ddd; /* Optional: Adds a border around the scrollable area */
+}

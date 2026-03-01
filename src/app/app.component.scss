@@ -21,7 +21,8 @@ app-side-nav{
   position: absolute;
   left: 0rem;
   width: 80.5px;
-  height: calc(100vh - 4rem);
+  //height: calc(100vh - 4rem);
+  height: 100vh;
   border: 2px;
   background: black;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.75);
@@ -85,4 +86,31 @@ app-side-nav{
 
 .transactions-header-container p {
   margin-top: 0.5rem;
+}
+
+
+.filter-upload-button-container {
+  display: flex;
+  gap: 50px;
+  position: relative;
+}
+
+.table-div-container {
+  max-height: 50rem; /* Set a fixed height for the scrollable area */
+  overflow-y: auto; /* Enables vertical scrolling */
+  overflow-x: auto; /* Enables horizontal scrolling (if needed) */
+  // border: 1px solid #ddd; /* Optional: Adds a border around the scrollable area */
+  width: 50rem;
+}
+
+.filter-panel {
+  z-index: 10000;
+  top: 120%;
+  position: absolute;
+  min-width: 250px;
+}
+
+.filter-action-button {
+  min-width: 10%;
+
 }
