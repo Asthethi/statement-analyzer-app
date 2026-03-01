@@ -5,7 +5,6 @@ import DrilldownModule from 'highcharts/modules/drilldown';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { StatementUploadDialogComponent } from '../statement-upload-dialog/statement-upload-dialog.component';
 import { TransactionResponse } from '../../../services/models/transaction-response';
-import { BankStatementControllerService } from '../../../services/services/bank-statement-controller.service';
 import { ChartConfig, ChartData } from '../../modals/chart-data.model';
 import { StatementControllerService } from '../../../services/services';
 
@@ -36,6 +35,7 @@ export class HomeComponent {
   chartConfig: ChartConfig = { title: '', data: this.chartData, type: '' };
 
   isDialogOpen: boolean = false;
+  isFileUploaded : boolean = false;
   isFilterModalVisible: boolean = false;
 
   highcharts = Highcharts;
@@ -64,6 +64,8 @@ export class HomeComponent {
           this.allTransactions = value;
           this.getCategoryWiseTotalExpense(); // Fetch all expenses category wise
           this.getMonthWiseExpenseReport();
+
+          this.isFileUploaded = true;
 
         },
         error: (err) => {

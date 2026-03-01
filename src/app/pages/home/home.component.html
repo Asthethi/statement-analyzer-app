@@ -36,6 +36,15 @@
     (statementFileUploadEvent)="handleFileUpload($event)"></app-statement-upload-dialog>
 <!-- Custom Dialog Component End -->
 
+<div style="text-align: center;
+    margin: 10rem; opacity: 50%;">
+  <p *ngIf="!isFileUploaded">Please upload a statement  
+    <img src="images/fileupload.svg">
+  </p>
+</div>
+
+
+
 <div class="row">
   <div *ngIf="isPieChartOptionsEmpty" class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <highcharts-chart
