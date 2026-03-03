@@ -1,10 +1,12 @@
+<div *ngIf="spinner.loading$ | async" class="overlay">
+  <div class="spinner"></div>
+</div>
 <div class="container-fluid g-0">
   <app-header (sideNavToggled)="sideNavStatus = $event;"></app-header>
   <main>
     <app-side-nav class="black-border" [sideNavStatus]="sideNavStatus" [ngClass]="{'app-side-nav-open': sideNavStatus}"></app-side-nav>
 
     <div class="display-area" [ngClass]="{'display-area-open': sideNavStatus}">
-      
       <router-outlet></router-outlet>
 
     </div>

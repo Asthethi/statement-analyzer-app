@@ -5,6 +5,8 @@ import { StatementUploadDialogComponent } from '../statement-upload-dialog/state
 import { BankStatementControllerService } from '../../../services/services/bank-statement-controller.service';
 import { CommonModule } from '@angular/common';
 import { StatementControllerService } from '../../../services/services';
+import { SpinnerService } from '../../../shared/spinner.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-transactions-view',
@@ -14,7 +16,9 @@ import { StatementControllerService } from '../../../services/services';
 })
 export class TransactionsViewComponent {
 
-    constructor(private bankService : StatementControllerService){}
+    constructor(private bankService : StatementControllerService,
+      private spinner : SpinnerService
+    ){}
 
     allTransactions : TransactionResponse[] = [];
     isDialogOpen : boolean = false;
@@ -46,7 +50,14 @@ export class TransactionsViewComponent {
 
     handleFileUpload(file : any) {
 
+      this.spinner.show();
+
       this.bankService.getTransactions({bankName : 'HDFC',body:{document : file, fileType : 'TEXT'}})
+
+      .pipe(
+            finalize(() => this.spinner.hide())   // 🔹 Automatically hide
+          )
+
       .subscribe({
         next : (value) => {
           this.allTransactions = value;

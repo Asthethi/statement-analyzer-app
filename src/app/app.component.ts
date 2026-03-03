@@ -3,6 +3,7 @@ import { HeaderComponent } from './header/header.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router'; 
+import { SpinnerService } from '../shared/spinner.service';
 
 
 @Component({
@@ -12,6 +13,7 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
+  constructor(public spinner: SpinnerService) {}
 
   sideNavStatus: boolean = false;
 

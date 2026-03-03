@@ -7,6 +7,9 @@ import { StatementUploadDialogComponent } from '../statement-upload-dialog/state
 import { TransactionResponse } from '../../../services/models/transaction-response';
 import { ChartConfig, ChartData } from '../../modals/chart-data.model';
 import { StatementControllerService } from '../../../services/services';
+import { SpinnerService } from '../../../shared/spinner.service';
+import { finalize, delay } from 'rxjs';
+
 
 // ✅ Ensure Drilldown module is loaded
 if (typeof DrilldownModule === 'function') {
@@ -22,7 +25,8 @@ if (typeof DrilldownModule === 'function') {
 
 export class HomeComponent {
 
-  constructor(private bankService: StatementControllerService
+  constructor(private bankService: StatementControllerService,
+    private spinner: SpinnerService
   ) { }
 
 
@@ -43,7 +47,6 @@ export class HomeComponent {
   monthWiseBarChartOptions: Highcharts.Options = {};
 
   ngOnInit() {
-
   }
 
   openDialog() {
@@ -55,10 +58,16 @@ export class HomeComponent {
   }
 
   handleFileUpload(file: any) {
+
+    this.spinner.show();   // 🔹 display the spinner
+
     this.uploadedTransactionsFile = file;
     const fileType = this.getFileType(this.uploadedTransactionsFile.type);
     console.log(fileType);
     this.bankService.getTransactions({bankName : 'HDFC', body: { document: file, fileType:  fileType} })
+    .pipe(
+      finalize(() => this.spinner.hide())   // 🔹 Automatically hide
+    )
       .subscribe({
         next: (value) => {
           this.allTransactions = value;
@@ -86,7 +95,16 @@ export class HomeComponent {
   }
 
   getMonthWiseExpenseReport() {
-    this.bankService.getMonthWiseExpenseReport({bankName : 'HDFC', body: { document: this.uploadedTransactionsFile } }).subscribe({
+
+    this.spinner.show();
+
+    this.bankService.getMonthWiseExpenseReport({bankName : 'HDFC', body: { document: this.uploadedTransactionsFile } })
+    
+    .pipe(
+      finalize(() => this.spinner.hide())   // 🔹 Automatically hide
+    )
+
+    .subscribe({
       next: (value) => {
         this.monthwiseExpenseReport = value;
       },
@@ -148,8 +166,17 @@ export class HomeComponent {
 
   /*Below Api fetchces all the expenses categories wise*/
   private getCategoryWiseTotalExpense() {
+
+    this.spinner.show();
+
     if (this.uploadedTransactionsFile) {
-      this.bankService.getCategoryWiseTotalExpense({bankName : 'HDFC', body: { document: this.uploadedTransactionsFile } }).subscribe({
+      this.bankService.getCategoryWiseTotalExpense({bankName : 'HDFC', body: { document: this.uploadedTransactionsFile } })
+      
+      .pipe(
+        finalize(() => this.spinner.hide())   // 🔹 Automatically hide
+      )
+
+      .subscribe({
         next: (value) => {
           this.totalExpenseCategoryWise = value;
         },
