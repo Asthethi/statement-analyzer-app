@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as Highcharts from 'highcharts';
 import DrilldownModule from 'highcharts/modules/drilldown';
@@ -9,6 +9,7 @@ import { ChartConfig, ChartData } from '../../modals/chart-data.model';
 import { StatementControllerService } from '../../../services/services';
 import { SpinnerService } from '../../../shared/spinner.service';
 import { finalize, delay } from 'rxjs';
+import { SaveBankStatement$Params } from '../../../services/fn/statement-controller/save-bank-statement';
 
 
 // ✅ Ensure Drilldown module is loaded
@@ -45,6 +46,10 @@ export class HomeComponent {
   highcharts = Highcharts;
   categoryWisePieChartOptions: Highcharts.Options = {};
   monthWiseBarChartOptions: Highcharts.Options = {};
+  isSaveStatementToDb : boolean = false;
+
+  @ViewChild(StatementUploadDialogComponent)
+  uploadDialog!: StatementUploadDialogComponent;
 
   ngOnInit() {
   }
@@ -55,6 +60,10 @@ export class HomeComponent {
 
   closeDialog() {
     this.isDialogOpen = false;
+  }
+
+  handleSaveStatementToDbToggle(value : boolean) {
+    this.isSaveStatementToDb = value;
   }
 
   handleFileUpload(file: any) {
@@ -74,6 +83,10 @@ export class HomeComponent {
           this.getCategoryWiseTotalExpense(); // Fetch all expenses category wise
           this.getMonthWiseExpenseReport();
 
+          if(this.isSaveStatementToDb) {
+            this.saveBankStatementToDatabase(this.allTransactions, 'HDFC');
+          }
+
           this.isFileUploaded = true;
 
         },
@@ -86,6 +99,33 @@ export class HomeComponent {
       })
 
   }
+  saveBankStatementToDatabase(allTransactions: TransactionResponse[], bankName: string) {
+    const request : SaveBankStatement$Params = {
+      bankName: bankName,
+      body : allTransactions
+    };
+
+    this.spinner.show();
+
+    this.bankService.saveBankStatement(request)
+    
+    .pipe(
+      finalize(() => this.spinner.hide())   // 🔹 Automatically hide
+    )
+
+    .subscribe({
+      next : (value) => {
+      },
+      error(err) {
+        alert(err);
+      },
+      complete : () => {
+        this.uploadDialog.resetFileSaveToggle();
+        alert('Bank Statement Saved to Db');
+      },  
+    });
+  }
+
   getFileType(type: any) {
     if(type === "text/plain") {
       return 'TEXT';

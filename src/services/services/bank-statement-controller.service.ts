@@ -23,8 +23,8 @@ import { getSpecificMonthTransactions1 } from '../fn/bank-statement-controller/g
 import { GetSpecificMonthTransactions1$Params } from '../fn/bank-statement-controller/get-specific-month-transactions-1';
 import { getTransactions1 } from '../fn/bank-statement-controller/get-transactions-1';
 import { GetTransactions1$Params } from '../fn/bank-statement-controller/get-transactions-1';
-import { saveTransactions1 } from '../fn/bank-statement-controller/save-transactions-1';
-import { SaveTransactions1$Params } from '../fn/bank-statement-controller/save-transactions-1';
+import { saveTransactions } from '../fn/bank-statement-controller/save-transactions';
+import { SaveTransactions$Params } from '../fn/bank-statement-controller/save-transactions';
 import { Transaction } from '../models/transaction';
 import { TransactionResponse } from '../models/transaction-response';
 
@@ -34,27 +34,27 @@ export class BankStatementControllerService extends BaseService {
     super(config, http);
   }
 
-  /** Path part for operation `saveTransactions1()` */
-  static readonly SaveTransactions1Path = '/account/statement/transactions/save';
+  /** Path part for operation `saveTransactions()` */
+  static readonly SaveTransactionsPath = '/account/statement/transactions/save';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `saveTransactions1()` instead.
+   * To access only the response body, use `saveTransactions()` instead.
    *
    * This method doesn't expect any request body.
    */
-  saveTransactions1$Response(params?: SaveTransactions1$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return saveTransactions1(this.http, this.rootUrl, params, context);
+  saveTransactions$Response(params?: SaveTransactions$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return saveTransactions(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `saveTransactions1$Response()` instead.
+   * To access the full response (for headers, for example), `saveTransactions$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  saveTransactions1(params?: SaveTransactions1$Params, context?: HttpContext): Observable<void> {
-    return this.saveTransactions1$Response(params, context).pipe(
+  saveTransactions(params?: SaveTransactions$Params, context?: HttpContext): Observable<void> {
+    return this.saveTransactions$Response(params, context).pipe(
       map((r: StrictHttpResponse<void>): void => r.body)
     );
   }

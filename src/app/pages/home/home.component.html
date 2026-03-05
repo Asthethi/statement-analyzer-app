@@ -32,7 +32,7 @@
 <hr>
 
 <!-- Custom Dialog Component -->
-<app-statement-upload-dialog [isOpen]="isDialogOpen" (close)="closeDialog()"
+<app-statement-upload-dialog (isSaveBankStatementToDbEnabled)="handleSaveStatementToDbToggle($event)" [isOpen]="isDialogOpen" (close)="closeDialog()"
     (statementFileUploadEvent)="handleFileUpload($event)"></app-statement-upload-dialog>
 <!-- Custom Dialog Component End -->
 

@@ -27,4 +27,4 @@ export function saveTransactions(http: HttpClient, rootUrl: string, params?: Sav
   );
 }
 
-saveTransactions.PATH = '/bank/account/statement/transactions/save';
+saveTransactions.PATH = '/account/statement/transactions/save';

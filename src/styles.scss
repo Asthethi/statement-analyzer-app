@@ -79,3 +79,5 @@ Common Styling for transaction-header with filter and upload button
   @keyframes spin {
     100% { transform: rotate(360deg); }
   }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

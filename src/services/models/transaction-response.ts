@@ -8,6 +8,7 @@ export interface TransactionResponse {
   debitAmount?: number;
   narration?: string;
   refNumber?: string;
+  transactionCategory?: string;
   transactionDate?: string;
   transactionType?: string;
 }

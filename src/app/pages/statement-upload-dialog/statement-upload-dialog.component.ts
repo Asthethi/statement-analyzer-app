@@ -1,9 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle'
+import { FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-statement-upload-dialog',
-  imports: [CommonModule],
+  imports: [CommonModule, MatSlideToggleModule, FormsModule],
   templateUrl: './statement-upload-dialog.component.html',
   styleUrl: './statement-upload-dialog.component.scss'
 })
@@ -13,6 +16,17 @@ export class StatementUploadDialogComponent {
   @Output() statementFileUploadEvent = new EventEmitter<File>();
 
   inputFile? : File | any;
+
+  @Output() isSaveBankStatementToDbEnabled = new EventEmitter<boolean>();
+  saveStatementToDb : boolean = false;
+
+  onFileSaveToggle() {
+    this.isSaveBankStatementToDbEnabled.emit(this.saveStatementToDb);
+  }
+
+  resetFileSaveToggle() {
+    this.saveStatementToDb = false;
+  }
 
   closeDialog() {
     this.close.emit(); // Notify parent to close dialog

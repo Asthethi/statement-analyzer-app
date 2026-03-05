@@ -23,40 +23,14 @@ import { getSpecificMonthTransactions } from '../fn/statement-controller/get-spe
 import { GetSpecificMonthTransactions$Params } from '../fn/statement-controller/get-specific-month-transactions';
 import { getTransactions } from '../fn/statement-controller/get-transactions';
 import { GetTransactions$Params } from '../fn/statement-controller/get-transactions';
-import { saveTransactions } from '../fn/statement-controller/save-transactions';
-import { SaveTransactions$Params } from '../fn/statement-controller/save-transactions';
-import { Transaction } from '../models/transaction';
+import { saveBankStatement } from '../fn/statement-controller/save-bank-statement';
+import { SaveBankStatement$Params } from '../fn/statement-controller/save-bank-statement';
 import { TransactionResponse } from '../models/transaction-response';
 
 @Injectable({ providedIn: 'root' })
 export class StatementControllerService extends BaseService {
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
-  }
-
-  /** Path part for operation `saveTransactions()` */
-  static readonly SaveTransactionsPath = '/bank/account/statement/transactions/save';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `saveTransactions()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  saveTransactions$Response(params?: SaveTransactions$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return saveTransactions(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `saveTransactions$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  saveTransactions(params?: SaveTransactions$Params, context?: HttpContext): Observable<void> {
-    return this.saveTransactions$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
-    );
   }
 
   /** Path part for operation `getSpecificMonthTransactions()` */
@@ -162,6 +136,31 @@ export class StatementControllerService extends BaseService {
     );
   }
 
+  /** Path part for operation `saveBankStatement()` */
+  static readonly SaveBankStatementPath = '/bank/account/statement/transactions/bankstatement/save/{bankName}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `saveBankStatement()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  saveBankStatement$Response(params: SaveBankStatement$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return saveBankStatement(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `saveBankStatement$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  saveBankStatement(params: SaveBankStatement$Params, context?: HttpContext): Observable<void> {
+    return this.saveBankStatement$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
   /** Path part for operation `getTransactions()` */
   static readonly GetTransactionsPath = '/bank/account/statement/all/transactions/{bankName}';
 
@@ -196,7 +195,7 @@ export class StatementControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getSpecificCategoryTransactions$Response(params: GetSpecificCategoryTransactions$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Transaction>>> {
+  getSpecificCategoryTransactions$Response(params: GetSpecificCategoryTransactions$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<TransactionResponse>>> {
     return getSpecificCategoryTransactions(this.http, this.rootUrl, params, context);
   }
 
@@ -206,9 +205,9 @@ export class StatementControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getSpecificCategoryTransactions(params: GetSpecificCategoryTransactions$Params, context?: HttpContext): Observable<Array<Transaction>> {
+  getSpecificCategoryTransactions(params: GetSpecificCategoryTransactions$Params, context?: HttpContext): Observable<Array<TransactionResponse>> {
     return this.getSpecificCategoryTransactions$Response(params, context).pipe(
-      map((r: StrictHttpResponse<Array<Transaction>>): Array<Transaction> => r.body)
+      map((r: StrictHttpResponse<Array<TransactionResponse>>): Array<TransactionResponse> => r.body)
     );
   }
 

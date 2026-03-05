@@ -8,15 +8,15 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { Transaction } from '../../models/transaction';
 import { TransactionCategoryRequest } from '../../models/transaction-category-request';
+import { TransactionResponse } from '../../models/transaction-response';
 
 export interface GetSpecificCategoryTransactions$Params {
   transactionCategoryRequest: TransactionCategoryRequest;
   bankName: string;
 }
 
-export function getSpecificCategoryTransactions(http: HttpClient, rootUrl: string, params: GetSpecificCategoryTransactions$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Transaction>>> {
+export function getSpecificCategoryTransactions(http: HttpClient, rootUrl: string, params: GetSpecificCategoryTransactions$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<TransactionResponse>>> {
   const rb = new RequestBuilder(rootUrl, getSpecificCategoryTransactions.PATH, 'get');
   if (params) {
     rb.query('transactionCategoryRequest', params.transactionCategoryRequest, {});
@@ -28,7 +28,7 @@ export function getSpecificCategoryTransactions(http: HttpClient, rootUrl: strin
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<Array<Transaction>>;
+      return r as StrictHttpResponse<Array<TransactionResponse>>;
     })
   );
 }

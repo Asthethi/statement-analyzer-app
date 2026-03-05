@@ -3,9 +3,23 @@
       <h3>Upload New Statement</h3>
       
         <!-- File Upload Input -->
+         <!-- <div class="row">
+          <div class="col-lg-11 col-md-11 col-sm-12 col-xs-12">
+            <div class="file-upload">
+              <input type="file" id="fileInput" (change)="onFileChange($event)" accept=".txt,.pdf" class="file-input" />
+            </div>
+          </div>
+          <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+            <input type="checkbox">
+          </div>
+         </div> -->
+
         <div class="file-upload">
           <input type="file" id="fileInput" (change)="onFileChange($event)" accept=".txt,.pdf" class="file-input" />
         </div>
+
+        <mat-slide-toggle [(ngModel)]="saveStatementToDb"
+        (change)="onFileSaveToggle()"> Save Statement to Db ?</mat-slide-toggle>
       
       <div class="action-buttons">
         <button (click)="uploadStatementFile()" 

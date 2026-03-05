@@ -11,19 +11,6 @@
     }
   ],
   "paths": {
-    "/bank/account/statement/transactions/save": {
-      "post": {
-        "tags": [
-          "statement-controller"
-        ],
-        "operationId": "saveTransactions",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/bank/account/statement/transactions/save/{bankName}/{month}": {
       "post": {
         "tags": [
@@ -184,6 +171,42 @@
         }
       }
     },
+    "/bank/account/statement/transactions/bankstatement/save/{bankName}": {
+      "post": {
+        "tags": [
+          "statement-controller"
+        ],
+        "operationId": "saveBankStatement",
+        "parameters": [
+          {
+            "name": "bankName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/TransactionResponse"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/bank/account/statement/all/transactions/{bankName}": {
       "post": {
         "tags": [
@@ -231,7 +254,7 @@
         "tags": [
           "bank-statement-controller"
         ],
-        "operationId": "saveTransactions_1",
+        "operationId": "saveTransactions",
         "responses": {
           "200": {
             "description": "OK"
@@ -433,7 +456,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Transaction"
+                    "$ref": "#/components/schemas/TransactionResponse"
                   }
                 }
               }
@@ -558,6 +581,9 @@
             "type": "string"
           },
           "transactionType": {
+            "type": "string"
+          },
+          "transactionCategory": {
             "type": "string"
           }
         }

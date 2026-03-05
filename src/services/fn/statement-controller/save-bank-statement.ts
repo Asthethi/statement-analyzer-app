@@ -8,13 +8,18 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
+import { TransactionResponse } from '../../models/transaction-response';
 
-export interface SaveTransactions1$Params {
+export interface SaveBankStatement$Params {
+  bankName: string;
+      body: Array<TransactionResponse>
 }
 
-export function saveTransactions1(http: HttpClient, rootUrl: string, params?: SaveTransactions1$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-  const rb = new RequestBuilder(rootUrl, saveTransactions1.PATH, 'post');
+export function saveBankStatement(http: HttpClient, rootUrl: string, params: SaveBankStatement$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+  const rb = new RequestBuilder(rootUrl, saveBankStatement.PATH, 'post');
   if (params) {
+    rb.path('bankName', params.bankName, {});
+    rb.body(params.body, 'application/json');
   }
 
   return http.request(
@@ -27,4 +32,4 @@ export function saveTransactions1(http: HttpClient, rootUrl: string, params?: Sa
   );
 }
 
-saveTransactions1.PATH = '/account/statement/transactions/save';
+saveBankStatement.PATH = '/bank/account/statement/transactions/bankstatement/save/{bankName}';
