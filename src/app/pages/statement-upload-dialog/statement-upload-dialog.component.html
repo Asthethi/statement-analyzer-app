@@ -2,17 +2,13 @@
     <div class="dialog">
       <h3>Upload New Statement</h3>
       
-        <!-- File Upload Input -->
-         <!-- <div class="row">
-          <div class="col-lg-11 col-md-11 col-sm-12 col-xs-12">
-            <div class="file-upload">
-              <input type="file" id="fileInput" (change)="onFileChange($event)" accept=".txt,.pdf" class="file-input" />
-            </div>
-          </div>
-          <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
-            <input type="checkbox">
-          </div>
-         </div> -->
+      <label for="filterBank" style="font-size: medium;" class="form-label">Select Bank :</label>
+      <select id="selectBankDropdown" class="form-select mb-2" [(ngModel)]="selectedBankId" (change)="selectBankName()">
+        <option [ngValue]="null" disabled>Select Bank</option>
+        <option *ngFor="let bank of banks" [ngValue]="bank.id">
+          {{bank.name}}
+        </option>
+      </select>
 
         <div class="file-upload">
           <input type="file" id="fileInput" (change)="onFileChange($event)" accept=".txt,.pdf" class="file-input" />
@@ -23,8 +19,8 @@
       
       <div class="action-buttons">
         <button (click)="uploadStatementFile()" 
-        [disabled] = "inputFile === undefined" 
-        [style]="inputFile === undefined ? { 'cursor': 'none', 'opacity': '0.25' } : {}" >Upload</button>
+        [disabled]="!inputFile || selectedBankId == null" 
+        [ngStyle]="(!inputFile || selectedBankId == null) ? { 'cursor': 'not-allowed', 'opacity': '0.25' } : {}">Upload</button>
         <button (click)="closeDialog()">Close</button>
       </div>
       

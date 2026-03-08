@@ -18,7 +18,30 @@ export class StatementUploadDialogComponent {
   inputFile? : File | any;
 
   @Output() isSaveBankStatementToDbEnabled = new EventEmitter<boolean>();
+
+  @Output() selectedBankName = new EventEmitter<string>();
+
   saveStatementToDb : boolean = false;
+
+  banks = [{
+    id : 1,
+    name : 'HDFC'
+  },
+  {
+    id : 2,
+    name : 'IDFC'
+  }];
+selectedBankId : number | null = null;
+
+
+
+getSelectedBankName(): string | undefined {
+  return this.banks.find(b => b.id === this.selectedBankId)?.name;
+}
+
+  selectBankName() {
+    this.selectedBankName.emit(this.getSelectedBankName());
+  }
 
   onFileSaveToggle() {
     this.isSaveBankStatementToDbEnabled.emit(this.saveStatementToDb);
@@ -29,6 +52,7 @@ export class StatementUploadDialogComponent {
   }
 
   closeDialog() {
+    this.inputFile = null;
     this.close.emit(); // Notify parent to close dialog
   }
 
@@ -41,14 +65,15 @@ export class StatementUploadDialogComponent {
     if (input && input.files && input.files.length > 0) {
       const file: File = input.files[0];
 
-      // if (file.type !== 'text/plain' && !file.name.endsWith('.txt')) {
-      //   alert('Only .txt files are allowed!');
-      //   input.value = ''; // Clear the input
-      //   return;
-      // }else{
-      //   this.inputFile = file;
-      // }
-      this.inputFile = file;
+      if (!(file.name.endsWith('.txt')) && !(file.name.endsWith('.pdf'))) {
+        alert('Only .txt/.pdf files are allowed!');
+        input.value = ''; // Clear the input
+        return;
+      }else{
+        this.inputFile = file;
+      }
+      
+      
     }
   }
 

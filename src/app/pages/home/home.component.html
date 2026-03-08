@@ -33,7 +33,7 @@
 
 <!-- Custom Dialog Component -->
 <app-statement-upload-dialog (isSaveBankStatementToDbEnabled)="handleSaveStatementToDbToggle($event)" [isOpen]="isDialogOpen" (close)="closeDialog()"
-    (statementFileUploadEvent)="handleFileUpload($event)"></app-statement-upload-dialog>
+    (statementFileUploadEvent)="handleFileUpload($event)" (selectedBankName)="handleSelectedBankName($event)"></app-statement-upload-dialog>
 <!-- Custom Dialog Component End -->
 
 <div style="text-align: center;

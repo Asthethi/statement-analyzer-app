@@ -25,7 +25,6 @@ if (typeof DrilldownModule === 'function') {
 })
 
 export class HomeComponent {
-
   constructor(private bankService: StatementControllerService,
     private spinner: SpinnerService
   ) { }
@@ -50,6 +49,11 @@ export class HomeComponent {
 
   @ViewChild(StatementUploadDialogComponent)
   uploadDialog!: StatementUploadDialogComponent;
+  bankName : string = '';
+
+handleSelectedBankName(bankName : string) {
+  this.bankName = bankName;
+}
 
   ngOnInit() {
   }
@@ -72,8 +76,7 @@ export class HomeComponent {
 
     this.uploadedTransactionsFile = file;
     const fileType = this.getFileType(this.uploadedTransactionsFile.type);
-    console.log(fileType);
-    this.bankService.getTransactions({bankName : 'HDFC', body: { document: file, fileType:  fileType} })
+    this.bankService.getTransactions({bankName : this.bankName, body: { document: file, fileType:  fileType} })
     .pipe(
       finalize(() => this.spinner.hide())   // 🔹 Automatically hide
     )
