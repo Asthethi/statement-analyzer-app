@@ -34,7 +34,7 @@
 
 <!-- Custom Dialog Component -->
 <app-statement-upload-dialog [isOpen]="isDialogOpen" (close)="closeDialog()"
-    (statementFileUploadEvent)="handleFileUpload($event)"></app-statement-upload-dialog>
+    (statementFileUploadEvent)="handleFileUpload($event)" (selectedBankName)="handleSelectedBankName($event)"></app-statement-upload-dialog>
 <!-- Custom Dialog Component End -->
 
 <!-- Table Container -->

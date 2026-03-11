@@ -10,12 +10,14 @@ import { StatementControllerService } from '../../../services/services';
 import { SpinnerService } from '../../../shared/spinner.service';
 import { finalize, delay } from 'rxjs';
 import { SaveBankStatement$Params } from '../../../services/fn/statement-controller/save-bank-statement';
+import Drilldown from 'highcharts/modules/drilldown';
 
 
 // ✅ Ensure Drilldown module is loaded
-if (typeof DrilldownModule === 'function') {
-  DrilldownModule(Highcharts);
-}
+// if (typeof Drilldown === 'function') {
+//   Drilldown(Highcharts);
+// } // uncomment this if below does not work in different angular / node version
+(Drilldown as any).default?.(Highcharts);
 
 @Component({
   selector: 'app-home',

@@ -24,10 +24,15 @@ export class TransactionsViewComponent {
     isDialogOpen : boolean = false;
     isFilterModalVisible : boolean = false;
     allExpenseCategories : string[] = [];
+    bankName : string = '';
 
     ngOnInit(){
       this.getAllExpenseCategories();
     }
+
+  handleSelectedBankName(bankName: string) {
+    this.bankName = bankName;
+  }
 
     getAllExpenseCategories() {
       this.bankService.getAllExpenseCategories({bankName : 'HDFC'}).subscribe({
@@ -48,11 +53,19 @@ export class TransactionsViewComponent {
       this.isDialogOpen = false;
     }
 
+      getFileType(type: any) {
+    if(type === "text/plain") {
+      return 'TEXT';
+    } else {
+      return 'PDF';
+    }
+  }
+
     handleFileUpload(file : any) {
 
       this.spinner.show();
 
-      this.bankService.getTransactions({bankName : 'HDFC',body:{document : file, fileType : 'TEXT'}})
+      this.bankService.getTransactions({bankName : this.bankName ,body:{document : file, fileType : this.getFileType(file.type)}})
 
       .pipe(
             finalize(() => this.spinner.hide())   // 🔹 Automatically hide
