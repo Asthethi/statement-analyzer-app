@@ -2,7 +2,6 @@ import { Component, HostListener } from '@angular/core';
 import { TransactionResponse } from '../../../services/models/transaction-response';
 import { TableViewComponent } from '../../table-view/table-view.component';
 import { StatementUploadDialogComponent } from '../statement-upload-dialog/statement-upload-dialog.component';
-import { BankStatementControllerService } from '../../../services/services/bank-statement-controller.service';
 import { CommonModule } from '@angular/common';
 import { StatementControllerService } from '../../../services/services';
 import { SpinnerService } from '../../../shared/spinner.service';

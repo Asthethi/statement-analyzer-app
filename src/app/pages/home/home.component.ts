@@ -58,6 +58,12 @@ handleSelectedBankName(bankName : string) {
 }
 
   ngOnInit() {
+    this.bankService.getAllBankStatement().subscribe({
+      next :(value) => {
+        console.log("statements")
+        console.log(value[0]);
+      }
+    })
   }
 
   openDialog() {
@@ -266,11 +272,14 @@ handleSelectedBankName(bankName : string) {
       chart: { type: chartConfig.type }, // ✅ Pie chart
       title: { text: chartConfig.title },
       xAxis: { type: 'category' }, // ✅ Categories on X-axis
-      yAxis: { title: { text: 'Amount Spent in (₹)' } },
+      yAxis: { title: { text: 'Amount Spent in (₹)' },
+    min: 0,
+  max : 2000000 },
       plotOptions: {
         series: {
           borderWidth: 0,
           dataLabels: {
+            rotation: -90,
             enabled: true,
             format: '₹{point.y:.2f}'
           }

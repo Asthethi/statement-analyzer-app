@@ -8,19 +8,15 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { BankStatement } from '../../models/bank-statement';
-import { TransactionResponse } from '../../models/transaction-response';
 
-export interface SaveBankStatement$Params {
+export interface GetAllExpenseCategories$Params {
   bankName: string;
-      body: Array<TransactionResponse>
 }
 
-export function saveBankStatement(http: HttpClient, rootUrl: string, params: SaveBankStatement$Params, context?: HttpContext): Observable<StrictHttpResponse<BankStatement>> {
-  const rb = new RequestBuilder(rootUrl, saveBankStatement.PATH, 'post');
+export function getAllExpenseCategories(http: HttpClient, rootUrl: string, params: GetAllExpenseCategories$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<string>>> {
+  const rb = new RequestBuilder(rootUrl, getAllExpenseCategories.PATH, 'get');
   if (params) {
     rb.path('bankName', params.bankName, {});
-    rb.body(params.body, 'application/json');
   }
 
   return http.request(
@@ -28,9 +24,9 @@ export function saveBankStatement(http: HttpClient, rootUrl: string, params: Sav
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<BankStatement>;
+      return r as StrictHttpResponse<Array<string>>;
     })
   );
 }
 
-saveBankStatement.PATH = '/bank/account/statement/transactions/bankstatement/save/{bankName}';
+getAllExpenseCategories.PATH = '/bank/account/statement/expensecategories/{bankName}';

@@ -8,19 +8,21 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { BankStatement } from '../../models/bank-statement';
-import { TransactionResponse } from '../../models/transaction-response';
 
-export interface SaveBankStatement$Params {
+export interface GetCategoryWiseTotalExpense$Params {
   bankName: string;
-      body: Array<TransactionResponse>
+      body?: {
+'document': Blob;
+}
 }
 
-export function saveBankStatement(http: HttpClient, rootUrl: string, params: SaveBankStatement$Params, context?: HttpContext): Observable<StrictHttpResponse<BankStatement>> {
-  const rb = new RequestBuilder(rootUrl, saveBankStatement.PATH, 'post');
+export function getCategoryWiseTotalExpense(http: HttpClient, rootUrl: string, params: GetCategoryWiseTotalExpense$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+[key: string]: number;
+}>> {
+  const rb = new RequestBuilder(rootUrl, getCategoryWiseTotalExpense.PATH, 'post');
   if (params) {
     rb.path('bankName', params.bankName, {});
-    rb.body(params.body, 'application/json');
+    rb.body(params.body, 'multipart/form-data');
   }
 
   return http.request(
@@ -28,9 +30,11 @@ export function saveBankStatement(http: HttpClient, rootUrl: string, params: Sav
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<BankStatement>;
+      return r as StrictHttpResponse<{
+      [key: string]: number;
+      }>;
     })
   );
 }
 
-saveBankStatement.PATH = '/bank/account/statement/transactions/bankstatement/save/{bankName}';
+getCategoryWiseTotalExpense.PATH = '/bank/account/statement/transactions/category/totalexpense/{bankName}';

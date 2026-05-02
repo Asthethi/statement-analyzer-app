@@ -8,19 +8,19 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { BankStatement } from '../../models/bank-statement';
 import { TransactionResponse } from '../../models/transaction-response';
 
-export interface SaveBankStatement$Params {
-  bankName: string;
-      body: Array<TransactionResponse>
+export interface GetSpecificMonthTransactions1$Params {
+      body?: {
+'document': Blob;
+'month'?: string;
+}
 }
 
-export function saveBankStatement(http: HttpClient, rootUrl: string, params: SaveBankStatement$Params, context?: HttpContext): Observable<StrictHttpResponse<BankStatement>> {
-  const rb = new RequestBuilder(rootUrl, saveBankStatement.PATH, 'post');
+export function getSpecificMonthTransactions1(http: HttpClient, rootUrl: string, params?: GetSpecificMonthTransactions1$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<TransactionResponse>>> {
+  const rb = new RequestBuilder(rootUrl, getSpecificMonthTransactions1.PATH, 'post');
   if (params) {
-    rb.path('bankName', params.bankName, {});
-    rb.body(params.body, 'application/json');
+    rb.body(params.body, 'multipart/form-data');
   }
 
   return http.request(
@@ -28,9 +28,9 @@ export function saveBankStatement(http: HttpClient, rootUrl: string, params: Sav
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<BankStatement>;
+      return r as StrictHttpResponse<Array<TransactionResponse>>;
     })
   );
 }
 
-saveBankStatement.PATH = '/bank/account/statement/transactions/bankstatement/save/{bankName}';
+getSpecificMonthTransactions1.PATH = '/account/statement/transactions/save/{month}';

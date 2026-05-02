@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { StatementControllerService } from './services/statement-controller.service';
+import { BankStatementControllerService } from './services/bank-statement-controller.service';
 
 /**
  * Module that provides all services and configuration.
@@ -17,6 +18,7 @@ import { StatementControllerService } from './services/statement-controller.serv
   declarations: [],
   providers: [
     StatementControllerService,
+    BankStatementControllerService,
     ApiConfiguration
   ],
 })

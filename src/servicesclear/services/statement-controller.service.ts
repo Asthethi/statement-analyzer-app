@@ -28,8 +28,6 @@ import { getTransactions } from '../fn/statement-controller/get-transactions';
 import { GetTransactions$Params } from '../fn/statement-controller/get-transactions';
 import { saveBankStatement } from '../fn/statement-controller/save-bank-statement';
 import { SaveBankStatement$Params } from '../fn/statement-controller/save-bank-statement';
-import { testEndpoint } from '../fn/statement-controller/test-endpoint';
-import { TestEndpoint$Params } from '../fn/statement-controller/test-endpoint';
 import { TransactionResponse } from '../models/transaction-response';
 
 @Injectable({ providedIn: 'root' })
@@ -213,31 +211,6 @@ export class StatementControllerService extends BaseService {
   getSpecificCategoryTransactions(params: GetSpecificCategoryTransactions$Params, context?: HttpContext): Observable<Array<TransactionResponse>> {
     return this.getSpecificCategoryTransactions$Response(params, context).pipe(
       map((r: StrictHttpResponse<Array<TransactionResponse>>): Array<TransactionResponse> => r.body)
-    );
-  }
-
-  /** Path part for operation `testEndpoint()` */
-  static readonly TestEndpointPath = '/bank/account/statement/test/{name}';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `testEndpoint()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  testEndpoint$Response(params: TestEndpoint$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
-    return testEndpoint(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `testEndpoint$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  testEndpoint(params: TestEndpoint$Params, context?: HttpContext): Observable<string> {
-    return this.testEndpoint$Response(params, context).pipe(
-      map((r: StrictHttpResponse<string>): string => r.body)
     );
   }
 
